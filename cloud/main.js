@@ -78,7 +78,6 @@ Parse.Cloud.define("getAddressFromLocation", function (request, response) {
             response.success("api, failure, " + httpResponse.status);
         }
     });
-
     // response.success("get Address from Location, lat: " + lat + ", lng: " + lng);
 });
 
@@ -129,14 +128,13 @@ function parse_address(response) {
     return final;
 }
 
-Parse.Cloud.afterSave("Photoxxx", function (request, response) {
+Parse.Cloud.afterSave("Photo", function (request, response) {
     const photo = request.object;
 
     const photoId = photo.id;
 
     new Parse.Query("Photo").get(photoId)
         .then(function (object) {
-
             const url = object.get("url");
 
             if (!!object.get('original')) {
