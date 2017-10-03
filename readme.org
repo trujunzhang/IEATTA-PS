@@ -1,0 +1,5 @@
+parse-server --appId zU5955fjYoDbG1EC0wY9RUb8zZYDtbivvUGuWZMv --restAPIKey yC9TR3jPR6s157s3hP4eCvknnfNkfOpwjdtGITXU --masterKey QEdn6fAh1HL95hShf4159jdXHgUMwgh5ObBVm8aD --databaseURI mongodb://localhost:28018/IEATTA
+
+
+
+parse-dashboard --appId zU5955fjYoDbG1EC0wY9RUb8zZYDtbivvUGuWZMv  --masterKey QEdn6fAh1HL95hShf4159jdXHgUMwgh5ObBVm8aD --serverURL "http://localhost:1337/parse" --appName delivery
