@@ -14,14 +14,14 @@ if (!databaseUri) {
 var api = new ParseServer({
     databaseURI: databaseUri || 'mongodb://localhost:28018/IEATTA',
     cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-    appId: process.env.APP_ID || 'YJ60VCiTAD01YOA3LJtHQlhaLjxiHSsv4mkxKvVM',
+    appId: 'YJ60VCiTAD01YOA3LJtHQlhaLjxiHSsv4mkxKvVM',
     clientKey: 'QMGWgF0PPgsFQsgwlKoDurVX65ZG5O0ifzdAtZ0D',
     restAPIKey: 'gQTEnIKaDWgZ4UiUZGQqN7qkkvtMCOobQEIb1kYy',
     javascriptKey: '3S9VZj8y9g0Tj1WS64dl19eDJrEVpvckG7uhcXIi',
-    masterKey: process.env.MASTER_KEY ||'87rxX8J0JwaaPSBxY9DdKJEqWXByqE7sShRsX4vg', //Add your master key here. Keep it secret!
+    masterKey: '87rxX8J0JwaaPSBxY9DdKJEqWXByqE7sShRsX4vg', //Add your master key here. Keep it secret!
     serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
     liveQuery: {
-        classNames: ["Posts", "Comments", "Shipment"] // List of classes to support for query subscriptions
+        classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
     }
 
     // push: {
