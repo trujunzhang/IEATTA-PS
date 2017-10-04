@@ -128,7 +128,7 @@ function parse_address(response) {
     return final;
 }
 
-Parse.Cloud.afterSave("Photo", function (request, response) {
+Parse.Cloud.afterSave("Photoxxx", function (request, response) {
     const photo = request.object;
 
     const photoId = photo.id;
