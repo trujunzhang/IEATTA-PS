@@ -177,6 +177,7 @@ Parse.Cloud.define("cropMultipleSizesImage", function (request, response) {
     const photoId = request.params.photoId;
     const returnImagesArray = [];
 
+
     console.log('(101.1) *** log crop multiple sizes image ***', request.params);
     console.log('(101.2) *** log crop multiple sizes image ***, url: ', url);
     console.log('(101.3) *** log crop multiple sizes image ***, photoId: ', photoId);
