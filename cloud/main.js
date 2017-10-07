@@ -299,11 +299,6 @@ Parse.Cloud.define("statisticUserState", function (request, response) {
     var reviewFourStarsQuery = filterForReview('user', userId, 'creator').equalTo('rate', 4);
     var reviewFiveStarsQuery = filterForReview('user', userId, 'creator').equalTo('rate', 5);
 
-    // var testQuery = new Parse.Query("Photo").include('recipe.user').equalTo('recipe.user', userParseObject);
-    var testQuery = new Parse.Query("PeopleInEvent")
-    // .include('event.restaurant')
-        .equalTo('restaurant', Parse.Object.extend('Restaurant').createWithoutData('rYc5t5gjo7'))
-
     var normalQueries = [firstQuery.count(), secondQuery.count(), thirdQuery.count(), fourQuery.count()];
     var starsQueries = [
         reviewOneStarsQuery.count(),
@@ -311,8 +306,6 @@ Parse.Cloud.define("statisticUserState", function (request, response) {
         reviewThreeStarsQuery.count(),
         reviewFourStarsQuery.count(),
         reviewFiveStarsQuery.count(),
-
-        // testQuery.count()
     ];
 
     var promises = normalQueries.concat(starsQueries);
