@@ -416,7 +416,6 @@ Parse.Cloud.define("statisticReviews", function (request, response) {
             "reviewRating": reviewRateForObject(reviews)
         };
 
-        debugger
         response.success(returnData);
 
     }, function (error) {
@@ -429,8 +428,6 @@ Parse.Cloud.define("statisticReviews", function (request, response) {
 Parse.Cloud.define("queryObjectIdByUniqueId", function (request, response) {
     const modelType = request.params.modelType;
     const forObjectUniqueId = request.params.forObjectUniqueId;
-
-    debugger
 
     var currentQuery = null;
     switch (modelType) {
@@ -449,7 +446,6 @@ Parse.Cloud.define("queryObjectIdByUniqueId", function (request, response) {
 
     Parse.Promise.when(promises).then(function (result) {
         const relatedInstance = result[0];
-        debugger
         response.success(!!relatedInstance ? relatedInstance.id : '');
 
     }, function (error) {
