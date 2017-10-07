@@ -288,16 +288,16 @@ Parse.Cloud.define("statisticUserState", function (request, response) {
 
     const userParseObject = Parse.Object.extend('User').createWithoutData(userId)
 
-    var firstQuery = new Parse.Query("Recipe").equalTo('user', userParseObject);
-    var secondQuery = new Parse.Query("Review").equalTo('user', userParseObject);
-    var thirdQuery = new Parse.Query("Photo").equalTo('owner', userParseObject);
-    var fourQuery = new Parse.Query("PeopleInEvent").equalTo('user', userParseObject);
+    var firstQuery = new Parse.Query("Recipe").equalTo('creator', userParseObject);
+    var secondQuery = new Parse.Query("Review").equalTo('creator', userParseObject);
+    var thirdQuery = new Parse.Query("Photo").equalTo('creator', userParseObject);
+    var fourQuery = new Parse.Query("PeopleInEvent").equalTo('creator', userParseObject);
 
-    var reviewOneStarsQuery = filterForReview('user', userId).equalTo('rate', 1);
-    var reviewTwoStarsQuery = filterForReview('user', userId).equalTo('rate', 2);
-    var reviewThreeStarsQuery = filterForReview('user', userId).equalTo('rate', 3);
-    var reviewFourStarsQuery = filterForReview('user', userId).equalTo('rate', 4);
-    var reviewFiveStarsQuery = filterForReview('user', userId).equalTo('rate', 5);
+    var reviewOneStarsQuery = filterForReview('user', userId, 'creator').equalTo('rate', 1);
+    var reviewTwoStarsQuery = filterForReview('user', userId, 'creator').equalTo('rate', 2);
+    var reviewThreeStarsQuery = filterForReview('user', userId, 'creator').equalTo('rate', 3);
+    var reviewFourStarsQuery = filterForReview('user', userId, 'creator').equalTo('rate', 4);
+    var reviewFiveStarsQuery = filterForReview('user', userId, 'creator').equalTo('rate', 5);
 
     // var testQuery = new Parse.Query("Photo").include('recipe.user').equalTo('recipe.user', userParseObject);
     var testQuery = new Parse.Query("PeopleInEvent")
@@ -361,9 +361,13 @@ function getInstanceWithoutData(modelType, forObjectId) {
     return relatedObject;
 }
 
-function filterForReview(reviewType, forObjectId) {
+function filterForReview(reviewType, forObjectId, fieldName) {
     const query = new Parse.Query("Review");
-    query.equalTo(reviewType, getInstanceWithoutData(reviewType, forObjectId))
+    var keyName = reviewType;
+    if (!!fieldName) {
+        keyName = fieldName;
+    }
+    query.equalTo(keyName, getInstanceWithoutData(reviewType, forObjectId))
     return query;
 }
 
