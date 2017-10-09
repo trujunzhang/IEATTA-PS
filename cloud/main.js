@@ -1,3 +1,13 @@
+var cloudinary = require('cloudinary').v2;
+
+
+// set your env variable CLOUDINARY_URL or set the following configuration
+cloudinary.config({
+    cloud_name: 'di3fvexj8',
+    api_key: '886131238629743',
+    api_secret: 'X1baj0k868ACgxU-a6Wobw8OsY8'
+});
+
 Parse.Cloud.define("hello", function (request, response) {
     // Requires two packages to make this happen.
     // const Image = require("parse-image");
@@ -128,7 +138,7 @@ function parse_address(response) {
     return final;
 }
 
-Parse.Cloud.afterSave("Photoxxx", function (request, response) {
+Parse.Cloud.afterSave("Photo", function (request, response) {
     const photo = request.object;
 
     const photoId = photo.id;
@@ -137,30 +147,20 @@ Parse.Cloud.afterSave("Photoxxx", function (request, response) {
         .then(function (object) {
             const url = object.get("url");
 
-            if (!!object.get('original')) {
-                console.log('(3.4) after query photo, @Exist[original]:', object.get('original'));
+            if (!!object.get('originalUrl')) {
+                console.log('(3.4) after query photo, @Exist[original]:', object.get('originalUrl'));
                 response.success(object);
             } else if (!!url && url !== '') {
                 console.log('(3.5)  generating the size images, @New[original]');
 
-                Parse.Cloud.run('cropMultipleSizesImage', {"imageURL": url, "photoId": photoId}, {
-                    success: function (result) {
-                        console.log('(4.1) callback: crop_multiple_sizes_image', result);
-                        console.log(result);
+                uploadImageToCloudinary({
+                    'imageURL': url
+                }).then(function (object) {
+                    debugger
 
-                        console.log('(4.1.1) : List crop sizes Image result');
-                        console.log('(4.1.2) : original,', result[0]);
-                        console.log('(4.1.3) : thumbnail,', result[1]);
-
-                        object.set("original", result[0]);
-                        object.set("thumbnail", result[1]);
-
-                        return object.save();
-                    },
-                    error: function (error) {
-                        console.log('(4.2) callback: crop_multiple_sizes_image', error);
-                        console.log(error);
-                    }
+                    object.set("originalUrl", object.originalUrl);
+                    object.set("thumbnailUrl", object.thumbnailUrl);
+                    return object.save();
                 });
             }
         })
@@ -170,6 +170,60 @@ Parse.Cloud.afterSave("Photoxxx", function (request, response) {
 
     debugger
 });
+
+function uploadImageToCloudinary(object) {
+    const imageURL = object.imageURL;
+    // const imageURL = 'https://xxx.com/yyy';
+
+    var promise = new Parse.Promise();
+    cloudinary.uploader.upload(imageURL,
+        function (err, image) {
+            if (err) {
+                debugger
+                promise.reject({
+                    error: err.message
+                })
+            } else {
+                debugger
+                var cloudinaryId = image.public_id;
+                var cloudinaryUrl = image.url;
+                const thumbnailUrl = cloudinary.url(cloudinaryId, {
+                    width: 348,
+                    height: 348,
+                    crop: 'fill',
+                    sign_url: true,
+                    fetch_format: "auto",
+                    quality: "auto"
+                })
+                var result = {
+                    "cloudinaryId": cloudinaryId,
+                    'originalUrl': cloudinaryUrl,
+                    'thumbnailUrl': thumbnailUrl
+                }
+                promise.resolve(result);
+            }
+        })
+
+    return promise;
+}
+
+Parse.Cloud.define("invokeCloudinary", function (request, response) {
+    const imageURL = request.params.imageURL;
+    const imageTag = request.params.imageTag;
+
+    cloudinary.uploader.upload(imageURL,
+        {"tags": imageTag},
+        function (err, image) {
+            console.log();
+            console.log("** Remote Url");
+            if (err) {
+                console.warn(err);
+            }
+            // console.log("* " + image.public_id);
+            // console.log("* " + image.url);
+            response.success(image);
+        });
+})
 
 Parse.Cloud.define("cropMultipleSizesImage", function (request, response) {
     const url = request.params.imageURL;
