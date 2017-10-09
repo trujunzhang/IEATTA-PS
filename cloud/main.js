@@ -145,7 +145,7 @@ Parse.Cloud.afterSave("Photo", function (request, response) {
             var photoModel = object.toJSON();
             var originalUrlExist = Object.keys(photoModel).indexOf('originalUrl') !== -1;
 
-            if (originalUrlExist) {
+            if (originalUrlExist && object.get('originalUrl') !== '') {
                 console.log('(3.1) after query photo, @Exist[original]:', object.get('originalUrl'));
                 response.success(object);
             } else if (!!url && url !== '') {
