@@ -163,24 +163,18 @@ Parse.Cloud.afterSave("Photoxxx", function (request, response) {
                     }
                 });
             }
-
         })
         .catch(function (error) {
             console.error("(8.)Got an error " + error.code + " : " + error.message);
         });
 
-    console.log('(10.) invoke crop_multiple_sizes_image');
+    debugger
 });
 
 Parse.Cloud.define("cropMultipleSizesImage", function (request, response) {
     const url = request.params.imageURL;
     const photoId = request.params.photoId;
     const returnImagesArray = [];
-
-
-    console.log('(101.1) *** log crop multiple sizes image ***', request.params);
-    console.log('(101.2) *** log crop multiple sizes image ***, url: ', url);
-    console.log('(101.3) *** log crop multiple sizes image ***, photoId: ', photoId);
 
     // Requires two packages to make this happen.
     var Image = require("parse-image");
