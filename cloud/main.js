@@ -152,10 +152,10 @@ Parse.Cloud.afterSave("Photo", function (request, response) {
                 console.log('(3.2)  generating the size images, @New[original]');
                 uploadImageToCloudinary({
                     'imageURL': url
-                }).then(function (object) {
-                    console.log('(3.3)  generated images from cloudinary, @success[original]', object.originalUrl);
-                    object.set("originalUrl", object.originalUrl);
-                    object.set("thumbnailUrl", object.thumbnailUrl);
+                }).then(function (result) {
+                    console.log('(3.3)  generated images from cloudinary, @success[original]', result.originalUrl);
+                    object.set("originalUrl", result.originalUrl);
+                    object.set("thumbnailUrl", result.thumbnailUrl);
                     return object.save();
                 });
             }
