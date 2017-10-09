@@ -10,14 +10,11 @@ cloudinary.config({
 
 Parse.Cloud.define("hello", function (request, response) {
     // Requires two packages to make this happen.
-    // const Image = require("parse-image");
-
     response.success("Hello world, trujunzhang!");
 });
 
 Parse.Cloud.afterSave("Restaurant", function (request, response) {
     const restaurant = request.object;
-
     const restaurantId = restaurant.id;
 
     new Parse.Query("Restaurant").get(restaurantId)
@@ -138,7 +135,7 @@ function parse_address(response) {
     return final;
 }
 
-Parse.Cloud.afterSave("Photoxxx", function (request, response) {
+Parse.Cloud.afterSave("Photo", function (request, response) {
     const photo = request.object;
     const photoId = photo.id;
 
@@ -148,18 +145,15 @@ Parse.Cloud.afterSave("Photoxxx", function (request, response) {
             var photoModel = object.toJSON();
             var originalUrlExist = Object.keys(photoModel).indexOf('originalUrl') !== -1;
 
-            debugger
-
-            if (!!object.get('originalUrl')) {
-                console.log('(3.4) after query photo, @Exist[original]:', object.get('originalUrl'));
+            if (originalUrlExist) {
+                console.log('(3.1) after query photo, @Exist[original]:', object.get('originalUrl'));
                 response.success(object);
             } else if (!!url && url !== '') {
-                console.log('(3.5)  generating the size images, @New[original]');
-                debugger
+                console.log('(3.2)  generating the size images, @New[original]');
                 uploadImageToCloudinary({
                     'imageURL': url
                 }).then(function (object) {
-                    debugger
+                    console.log('(3.3)  generated images from cloudinary, @success[original]', object.originalUrl);
                     object.set("originalUrl", object.originalUrl);
                     object.set("thumbnailUrl", object.thumbnailUrl);
                     return object.save();
