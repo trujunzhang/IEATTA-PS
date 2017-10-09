@@ -140,7 +140,6 @@ function parse_address(response) {
 
 Parse.Cloud.afterSave("Photo", function (request, response) {
     const photo = request.object;
-
     const photoId = photo.id;
 
     new Parse.Query("Photo").get(photoId)
@@ -156,8 +155,6 @@ Parse.Cloud.afterSave("Photo", function (request, response) {
                 uploadImageToCloudinary({
                     'imageURL': url
                 }).then(function (object) {
-                    debugger
-
                     object.set("originalUrl", object.originalUrl);
                     object.set("thumbnailUrl", object.thumbnailUrl);
                     return object.save();
@@ -167,8 +164,6 @@ Parse.Cloud.afterSave("Photo", function (request, response) {
         .catch(function (error) {
             console.error("(8.)Got an error " + error.code + " : " + error.message);
         });
-
-    debugger
 });
 
 function uploadImageToCloudinary(object) {
