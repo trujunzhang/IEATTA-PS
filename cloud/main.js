@@ -1,5 +1,5 @@
 var cloudinary = require('cloudinary').v2;
-
+const _ = require('underscore')
 
 // set your env variable CLOUDINARY_URL or set the following configuration
 cloudinary.config({
@@ -344,8 +344,6 @@ Parse.Cloud.define("statisticUserState", function (request, response) {
     // var promises = [testQuery.count()]
 
     Parse.Promise.when(promises).then(function (result) {
-
-        debugger
         var returnData = {
             "recipes": result[0],
             "reviews": result[1],
@@ -397,11 +395,10 @@ function filterForReview(reviewType, forObjectId, fieldName) {
 }
 
 function reviewRateForObject(array) {
-    var sum = 0
-
-    for (var i = 0; i < array.length; i++) {
-        sum = array[i].get('rate')
-    }
+    var sum = _.reduce(array, function (memo, row) {
+        var _value = row.get('rate')
+        return memo + _value;
+    }, 0);
 
     var avg = (sum / array.length)
     if (avg < 1 && avg > 0) {
