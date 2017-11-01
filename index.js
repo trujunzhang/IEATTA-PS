@@ -4,6 +4,7 @@
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
+const resolve = require('path').resolve;
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
@@ -14,6 +15,8 @@ if (!databaseUri) {
 var api = new ParseServer({
     databaseURI: databaseUri || 'mongodb://localhost:28018/IEATTA',
     cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
+    appName: "IEATTA",
+    publicServerURL: 'http://ieatta-web.herokuapp.com/',
     appId: 'YJ60VCiTAD01YOA3LJtHQlhaLjxiHSsv4mkxKvVM',
     clientKey: 'QMGWgF0PPgsFQsgwlKoDurVX65ZG5O0ifzdAtZ0D',
     restAPIKey: 'gQTEnIKaDWgZ4UiUZGQqN7qkkvtMCOobQEIb1kYy',
@@ -22,22 +25,48 @@ var api = new ParseServer({
     serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
     liveQuery: {
         classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+    },
+    verifyUserEmails: true,
+    emailAdapter: {
+        module: 'parse-server-mailgun',
+        options: {
+            // The address that your emails come from
+            fromAddress: 'trujunzhang@gmail.com>',
+            // Your domain from mailgun.com
+            domain: "sandbox25f368c4b2da4621af07cf4276682fd6.mailgun.org",
+            // Your API key from mailgun.com
+            apiKey: "330783da3fa3ebc4e72d8ffae7c50b70",
+            // The template section
+            templates: {
+                passwordResetEmail: {
+                    subject: 'Reset your password',
+                    pathPlainText: resolve(__dirname, 'path/to/templates/password_reset_email.txt'),
+                    pathHtml: resolve(__dirname, 'path/to/templates/password_reset_email.html'),
+                    callback: (user) => {
+                        return {firstName: user.get('firstName')}
+                    }
+                    // Now you can use {{firstName}} in your templates
+                },
+                verificationEmail: {
+                    subject: 'Confirm your account',
+                    pathPlainText: resolve(__dirname, 'path/to/templates/verification_email.txt'),
+                    pathHtml: resolve(__dirname, 'path/to/templates/verification_email.html'),
+                    callback: (user) => {
+                        return {firstName: user.get('firstName')}
+                    }
+                    // Now you can use {{firstName}} in your templates
+                },
+                customEmailAlert: {
+                    subject: 'Urgent notification!',
+                    pathPlainText: resolve(__dirname, 'path/to/templates/custom_alert.txt'),
+                    pathHtml: resolve(__dirname, 'path/to/templates/custom_alert.html'),
+                }
+            }
+        }
     }
 
-    // push: {
-    //     android: {
-    //         senderId: '...',
-    //         apiKey: '...'
-    //     },
-    //     ios: {
-    //         pfx: '/Users/djzhang/Documents/androidapk/delivery/delivery-push.p12',
-    //         passphrase: 'trujunzhang', // optional password to your p12/PFX
-    //         bundleId: 'com.Socialinfotech.DeliveryApp',
-    //         production: false
-    //     }
-    // }
+})
 
-});
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
