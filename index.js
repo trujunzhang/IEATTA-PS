@@ -58,8 +58,8 @@ var api = new ParseServer({
                 },
                 customEmailAlert: {
                     subject: 'Urgent notification!',
-                    pathPlainText: resolve(__dirname, 'email-templates/custom_alert.txt'),
-                    pathHtml: resolve(__dirname, 'email-templates/custom_alert.html'),
+                    pathPlainText: resolve(__dirname, 'email-templates/invite_friends.txt'),
+                    pathHtml: resolve(__dirname, 'email-templates/invite_friends.html'),
                 }
             }
         }
