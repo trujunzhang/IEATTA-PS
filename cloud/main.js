@@ -512,7 +512,7 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
             recipient: toEmails[i],
             variables: {
                 username: username,
-                userLink: userLink,
+                userLink: homepage + userLink,
                 homepage: homepage
             },// {{alert}} will be compiled to 'New posts'
             // variables: {alert: 'New posts'},// {{alert}} will be compiled to 'New posts'
