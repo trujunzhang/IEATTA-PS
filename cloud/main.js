@@ -489,7 +489,7 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
     const username = request.params.username;
     const homepage = request.params.homepage;
     const fromEmail = request.params.fromEmail;
-    const invitorEmails = request.params.toEmails;
+    const toEmails = request.params.toEmails;
 
     // Get access to Parse Server's cache
     const {AppCache} = require('parse-server/lib/cache');
@@ -497,8 +497,8 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
     // NOTE: It's best to do this inside the Parse.Cloud.define(...) method body and not at the top of your file with your other imports. This gives Parse Server time to boot, setup cloud code and the email adapter.
     const MailgunAdapter = AppCache.get('YJ60VCiTAD01YOA3LJtHQlhaLjxiHSsv4mkxKvVM').userController.adapter;
 
-    for (var i = 0; i < invitorEmails.length; i++) {
-        if (invitorEmails[i] === '') {
+    for (var i = 0; i < toEmails.length; i++) {
+        if (toEmails[i] === '') {
             continue;
         }
         // Invoke the send method with an options object
@@ -508,7 +508,7 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
             subject: 'Invite: join the IEATTA!',
             fromAddress: fromEmail,
             // Optional override of the adapter's fromAddress
-            recipient: invitorEmails[i],
+            recipient: toEmails[i],
             variables: {username: username, homepage: homepage},// {{alert}} will be compiled to 'New posts'
             // variables: {alert: 'New posts'},// {{alert}} will be compiled to 'New posts'
             // Additional message fields can be included with the "extra" option
