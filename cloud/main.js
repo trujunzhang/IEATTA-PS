@@ -486,6 +486,8 @@ Parse.Cloud.define("queryObjectIdByUniqueId", function (request, response) {
 
 
 Parse.Cloud.define("inviteCompose", function (request, response) {
+    const username = request.params.username;
+    const homepage = request.params.homepage;
 
     // Get access to Parse Server's cache
     const {AppCache} = require('parse-server/lib/cache');
@@ -500,7 +502,8 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
         subject: 'Important: action required',
         // Optional override of the adapter's fromAddress
         recipient: 'wanghao720sn@sina.com',
-        variables: {alert: 'New posts'},// {{alert}} will be compiled to 'New posts'
+        variables: {username: username, homepage: homepage},// {{alert}} will be compiled to 'New posts'
+        // variables: {alert: 'New posts'},// {{alert}} will be compiled to 'New posts'
         // Additional message fields can be included with the "extra" option
         // See https://nodemailer.com/extras/mailcomposer/#e-mail-message-fields for an overview of what can be included
         extra: {
