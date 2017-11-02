@@ -490,7 +490,7 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
     const userLink = request.params.userLink;
     const homepage = request.params.homepage;
     const fromEmail = request.params.fromEmail;
-    const toEmails = request.params.toEmails;
+    const toEmail = request.params.toEmail;
 
     // Get access to Parse Server's cache
     const {AppCache} = require('parse-server/lib/cache');
@@ -498,30 +498,25 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
     // NOTE: It's best to do this inside the Parse.Cloud.define(...) method body and not at the top of your file with your other imports. This gives Parse Server time to boot, setup cloud code and the email adapter.
     const MailgunAdapter = AppCache.get('YJ60VCiTAD01YOA3LJtHQlhaLjxiHSsv4mkxKvVM').userController.adapter;
 
-    for (var i = 0; i < toEmails.length; i++) {
-        if (toEmails[i] === '') {
-            continue;
+    // Invoke the send method with an options object
+    MailgunAdapter.send({
+        templateName: 'inviteFriendsEmail',
+        // Optional override of your configuration's subject
+        subject: 'Invite: join the IEATTA!',
+        fromAddress: fromEmail,
+        // Optional override of the adapter's fromAddress
+        recipient: toEmail,
+        variables: {
+            username: username,
+            userLink: userLink,
+            homepage: homepage
+        },// {{alert}} will be compiled to 'New posts'
+        // variables: {alert: 'New posts'},// {{alert}} will be compiled to 'New posts'
+        // Additional message fields can be included with the "extra" option
+        // See https://nodemailer.com/extras/mailcomposer/#e-mail-message-fields for an overview of what can be included
+        extra: {
+            attachments: [/* include attachment objects */],
+            replyTo: 'reply-to-address'
         }
-        // Invoke the send method with an options object
-        MailgunAdapter.send({
-            templateName: 'inviteFriendsEmail',
-            // Optional override of your configuration's subject
-            subject: 'Invite: join the IEATTA!',
-            fromAddress: fromEmail,
-            // Optional override of the adapter's fromAddress
-            recipient: toEmails[i],
-            variables: {
-                username: username,
-                userLink: homepage + userLink,
-                homepage: homepage
-            },// {{alert}} will be compiled to 'New posts'
-            // variables: {alert: 'New posts'},// {{alert}} will be compiled to 'New posts'
-            // Additional message fields can be included with the "extra" option
-            // See https://nodemailer.com/extras/mailcomposer/#e-mail-message-fields for an overview of what can be included
-            extra: {
-                attachments: [/* include attachment objects */],
-                replyTo: 'reply-to-address'
-            }
-        });
-    }
+    });
 });
