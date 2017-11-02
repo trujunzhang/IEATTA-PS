@@ -512,8 +512,8 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
             recipient: toEmails[i],
             variables: {
                 username: username,
-                homepage: homepage,
-                userLink: userLink
+                userLink: userLink,
+                homepage: homepage
             },// {{alert}} will be compiled to 'New posts'
             // variables: {alert: 'New posts'},// {{alert}} will be compiled to 'New posts'
             // Additional message fields can be included with the "extra" option
