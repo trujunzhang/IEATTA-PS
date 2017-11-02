@@ -1,0 +1,5 @@
+{{username}} wants you to join the IEATTA. Wherever you are, whatever you’re looking for – use IEATTA to trace what you had to eat and where.
+
+The following is what you can visit:
+   homepage: {{homepage}}
+   userLink: {{userLink}}

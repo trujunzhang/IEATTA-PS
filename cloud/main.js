@@ -487,6 +487,7 @@ Parse.Cloud.define("queryObjectIdByUniqueId", function (request, response) {
 
 Parse.Cloud.define("inviteCompose", function (request, response) {
     const username = request.params.username;
+    const userLink = request.params.userLink;
     const homepage = request.params.homepage;
     const fromEmail = request.params.fromEmail;
     const toEmails = request.params.toEmails;
@@ -509,7 +510,11 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
             fromAddress: fromEmail,
             // Optional override of the adapter's fromAddress
             recipient: toEmails[i],
-            variables: {username: username, homepage: homepage},// {{alert}} will be compiled to 'New posts'
+            variables: {
+                username: username,
+                homepage: homepage,
+                userLink: userLink
+            },// {{alert}} will be compiled to 'New posts'
             // variables: {alert: 'New posts'},// {{alert}} will be compiled to 'New posts'
             // Additional message fields can be included with the "extra" option
             // See https://nodemailer.com/extras/mailcomposer/#e-mail-message-fields for an overview of what can be included
