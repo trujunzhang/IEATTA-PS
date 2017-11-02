@@ -56,7 +56,7 @@ var api = new ParseServer({
                     }
                     // Now you can use {{firstName}} in your templates
                 },
-                customEmailAlert: {
+                inviteFriendsEmail: {
                     subject: 'Urgent notification!',
                     pathPlainText: resolve(__dirname, 'email-templates/invite_friends.txt'),
                     pathHtml: resolve(__dirname, 'email-templates/invite_friends.html'),

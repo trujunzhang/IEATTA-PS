@@ -495,7 +495,7 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
 
     // Invoke the send method with an options object
     MailgunAdapter.send({
-        templateName: 'customEmailAlert',
+        templateName: 'inviteFriendsEmail',
         // Optional override of your configuration's subject
         subject: 'Important: action required',
         // Optional override of the adapter's fromAddress
