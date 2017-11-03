@@ -522,13 +522,10 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
 
     Parse.Promise.when(promise).then(function (result) {
         if (typeof result === 'undefined') {
-            response.error('');
+            response.error('Sent email failure!');
         } else {
             response.success(result);
         }
-    }, function (error) {
-        debugger
-        response.error(error);
-    });
+    })
 
 });
