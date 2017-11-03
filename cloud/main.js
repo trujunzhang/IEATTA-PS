@@ -499,7 +499,7 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
     const MailgunAdapter = AppCache.get('YJ60VCiTAD01YOA3LJtHQlhaLjxiHSsv4mkxKvVM').userController.adapter;
 
     // Invoke the send method with an options object
-    MailgunAdapter.send({
+    const promise = MailgunAdapter.send({
         templateName: 'inviteFriendsEmail',
         // Optional override of your configuration's subject
         subject: 'Invite: join the IEATTA!',
@@ -519,4 +519,16 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
             replyTo: 'reply-to-address'
         }
     });
+
+    Parse.Promise.when(promise).then(function (result) {
+        if (typeof result === 'undefined') {
+            response.error('');
+        } else {
+            response.success(result);
+        }
+    }, function (error) {
+        debugger
+        response.error(error);
+    });
+
 });
