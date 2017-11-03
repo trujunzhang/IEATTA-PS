@@ -520,12 +520,18 @@ Parse.Cloud.define("inviteCompose", function (request, response) {
         }
     });
 
-    Parse.Promise.when(promise).then(function (result) {
-        if (typeof result === 'undefined') {
-            response.error('Sent email failure!');
-        } else {
-            response.success(result);
-        }
-    })
+    // Parse.Promise.when(promise).then(function (result) {
+    //     if (typeof result === 'undefined') {
+    //         response.error('Sent email failure!');
+    //     } else {
+    //         response.success(result);
+    //     }
+    // })
+
+    promise.then(function (value) {
+        response.success(value);
+    }, function (err) {
+        response.error(err.stack)
+    });
 
 });
