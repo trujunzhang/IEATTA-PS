@@ -484,6 +484,36 @@ Parse.Cloud.define("queryObjectIdByUniqueId", function (request, response) {
 
 });
 
+Parse.Cloud.define("photoListUrls", function (request, response) {
+    const photoRelations = request.params.photoRelations;
+
+    var promises = [];
+
+    for (var i = 0; i < photoRelations.length; i++) {
+        var relation = photoRelations[i];
+        promises.push(
+            new Parse.Query("Photo").equalTo('uniqueId', relation.id).equal('photoType', relation.photoType).limit(1).find()
+        )
+    }
+
+    Parse.Promise.when(promises).then(function (result) {
+        var returnData = {};
+
+        for (var i = 0; i < photoRelations.length; i++) {
+            var relation = photoRelations[i];
+            var array = result[i];
+
+            returnData[relation.id] = array.length > 0 ? array[0].get('thumbnailUrl') : '';
+        }
+
+        response.success(returnData);
+    }, function (error) {
+        debugger
+        response.error(error);
+    });
+
+
+});
 
 Parse.Cloud.define("inviteCompose", function (request, response) {
     const username = request.params.username;
