@@ -491,8 +491,9 @@ Parse.Cloud.define("photoListUrls", function (request, response) {
 
     for (var i = 0; i < photoRelations.length; i++) {
         var relation = photoRelations[i];
+        const object = getInstanceWithoutData(relation.photoType, relation.id)
         promises.push(
-            new Parse.Query("Photo").equalTo('uniqueId', relation.id).equalTo('photoType', relation.photoType).limit(1).find()
+            new Parse.Query("Photo").equalTo('photoType', relation.photoType).equalTo(relation.photoType, object).limit(1).find()
         )
     }
 
