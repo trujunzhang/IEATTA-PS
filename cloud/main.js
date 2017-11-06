@@ -492,7 +492,7 @@ Parse.Cloud.define("photoListUrls", function (request, response) {
     for (var i = 0; i < photoRelations.length; i++) {
         var relation = photoRelations[i];
         promises.push(
-            new Parse.Query("Photo").equalTo('uniqueId', relation.id).equal('photoType', relation.photoType).limit(1).find()
+            new Parse.Query("Photo").equalTo('uniqueId', relation.id).equalTo('photoType', relation.photoType).limit(1).find()
         )
     }
 
